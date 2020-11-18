@@ -26,9 +26,7 @@ io.on('connection', function(socket){
     console.log("Socket id: "+socket.id);
 
 
-    socket.emit('message', formatMessage(bot, 'Welcome to Chat!!'));
-
-    socket.on('chatMessage', function(msgObj){
+        socket.on('chatMessage', function(msgObj){
         console.log("Message from client");
 
         io.emit('message', formatMessage(msgObj.to,msgObj.msg));

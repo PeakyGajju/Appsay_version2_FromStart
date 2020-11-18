@@ -11,11 +11,30 @@ socket.on('message', function(message){
 
   sharedMomentsArea.scrollTop=sharedMomentsArea.scrollHeight;
 
-  // if(document.hidden){
+  if(document.visibilityState === 'hidden'){
       notify(message)
-  // }
+  }
 
 })
+
+var flag=0;
+
+
+window.addEventListener('load', function(event){
+
+  console.log("Inside onload event of the body tag");
+
+  setTimeout(Notification.requestPermission((permission)=>{
+
+      if(permission === 'granted'){
+          flag=1;
+          console.log("From asking permission event");
+       }
+
+  }), 3000);
+
+})
+
 
 function notify(msg){
 
@@ -29,35 +48,38 @@ function notify(msg){
       body: msg.username + ": " + msg.body,
       icon: '/src/images/icons/app-icon-96x96.png' 
     }
+
     navigator.serviceWorker.ready
-      .then(function(swreg){
-        swreg.showNotification('Successfully Subsribed', options);
-      });
+    .then(function(swreg){
+      swreg.showNotification('Successfully Subsribed', options);
+    });
 
 }
 
 else if (Notification.permission !== 'denied') {
-  Notification.requestPermission(function(permission) {
-  
-    if (permission === "granted") {
+ 
+    if (flag === 1) {
            var options={
         body: msg.username + ": " + msg.body,
         icon: '/src/images/icons/app-icon-96x96.png' 
+      
       }
+
       navigator.serviceWorker.ready
-        .then(function(swreg){
-          swreg.showNotification('Successfully Subsribed', options);
-        });
-        }
-  });
-}
+      .then(function(swreg){
+        swreg.showNotification('Successfully Subsribed', options);
+      });
+        
+
+    } 
+  }
 
 }
 
 
 
 chatForm.addEventListener('submit', function(event){
-  event.preventDefault();
+    event.preventDefault();
 
   let msg=event.target.elements.msg.value;
     console.log("msg"+msg);
