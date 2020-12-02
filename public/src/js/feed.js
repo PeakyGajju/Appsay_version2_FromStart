@@ -1,4 +1,5 @@
 
+var enableNotifications=document.querySelector(".enable-notifications");
 var sharedMomentsArea=document.getElementById('shared-moments');
 const chatForm=document.querySelector('#chat-form');
 
@@ -19,10 +20,11 @@ socket.on('message', function(message){
 
 var flag=0;
 
+enableNotifications.addEventListener('click', function(event){
 
-window.addEventListener('load', function(event){
+  console.log("Clicked");
 
-  console.log("Inside onload event of the body tag");
+  console.log("Inside onclick event of the enable notifications button");
 
   setTimeout(Notification.requestPermission((permission)=>{
 
@@ -33,8 +35,7 @@ window.addEventListener('load', function(event){
 
   }), 3000);
 
-})
-
+});
 
 function notify(msg){
 
@@ -51,14 +52,14 @@ function notify(msg){
 
     navigator.serviceWorker.ready
     .then(function(swreg){
-      swreg.showNotification('Successfully Subsribed', options);
+      swreg.showNotification('New Message', options);
     });
 
 }
 
 else if (Notification.permission !== 'denied') {
- 
-    if (flag === 1) {
+
+      if (flag === 1) {
            var options={
         body: msg.username + ": " + msg.body,
         icon: '/src/images/icons/app-icon-96x96.png' 
@@ -67,7 +68,7 @@ else if (Notification.permission !== 'denied') {
 
       navigator.serviceWorker.ready
       .then(function(swreg){
-        swreg.showNotification('Successfully Subsribed', options);
+        swreg.showNotification('New Message', options);
       });
         
 
