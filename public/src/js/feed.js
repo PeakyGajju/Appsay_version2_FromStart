@@ -1,7 +1,18 @@
 
-var enableNotifications=document.querySelector(".enable-notifications");
+var enableNotifications=document.querySelectorAll('.enable-notifications');
 var sharedMomentsArea=document.getElementById('shared-moments');
 const chatForm=document.querySelector('#chat-form');
+
+
+if('Notification' in window && 'serviceWorker' in navigator){
+
+  for(var i=0; i<enableNotifications.length; i++){
+    enableNotifications[i].style.display='inline-block';
+    enableNotifications[i].addEventListener('click', handleNotificationButtonClick);
+  }
+  
+
+}
 
 
 const socket = io();
@@ -20,7 +31,7 @@ socket.on('message', function(message){
 
 var flag=0;
 
-enableNotifications.addEventListener('click', function(event){
+function handleNotificationButtonClick(){
 
   console.log("Clicked");
 
@@ -35,7 +46,7 @@ enableNotifications.addEventListener('click', function(event){
 
   }), 3000);
 
-});
+};
 
 function notify(msg){
 
@@ -44,7 +55,6 @@ function notify(msg){
   }
 
   else if(Notification.permission === "granted"){
-    
     var options={
       body: msg.username + ": " + msg.body,
       icon: '/src/images/icons/app-icon-96x96.png' 
